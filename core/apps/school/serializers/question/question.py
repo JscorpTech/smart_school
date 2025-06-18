@@ -1,14 +1,17 @@
 from rest_framework import serializers
 
 from core.apps.school.models import QuestionModel
+from core.apps.school.serializers.question.questionset import ListQuestionsetSerializer
 
 
 class BaseQuestionSerializer(serializers.ModelSerializer):
+    question_set = ListQuestionsetSerializer()
+
     class Meta:
         model = QuestionModel
         fields = [
             "id",
-            "name",
+            "question_set",
         ]
 
 
@@ -24,5 +27,5 @@ class CreateQuestionSerializer(BaseQuestionSerializer):
     class Meta(BaseQuestionSerializer.Meta):
         fields = [
             "id",
-            "name",
+            "question_set",
         ]

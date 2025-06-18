@@ -140,9 +140,9 @@ class QuestionsetTest(TestCase):
         self.client = APIClient()
         self.instance = self._create_data()
         self.urls = {
-            "list": reverse("questionSet-list"),
-            "retrieve": reverse("questionSet-detail", kwargs={"pk": self.instance.pk}),
-            "retrieve-not-found": reverse("questionSet-detail", kwargs={"pk": 1000}),
+            "list": reverse("questionset-list"),
+            "retrieve": reverse("questionset-detail", kwargs={"pk": self.instance.pk}),
+            "retrieve-not-found": reverse("questionset-detail", kwargs={"pk": 1000}),
         }
 
     def test_create(self):

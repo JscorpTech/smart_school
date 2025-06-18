@@ -53,7 +53,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'QuestionsetModel',
                 'verbose_name_plural': 'QuestionsetModels',
-                'db_table': 'questionSet',
+                'db_table': 'questionset',
             },
         ),
         migrations.CreateModel(

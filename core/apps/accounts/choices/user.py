@@ -7,6 +7,6 @@ class RoleChoice(models.TextChoices):
     User Role Choice
     """
 
-    SUPERUSER = "superuser", _("Superuser")
     ADMIN = "admin", _("Admin")
-    USER = "user", _("User")
+    PARENT = "parent", _("Parent")
+    STUDENT = "student", _("Student")

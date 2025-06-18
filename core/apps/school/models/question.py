@@ -61,7 +61,7 @@ class QuestionSetModel(AbstractBaseModel):
         )
 
     class Meta:
-        db_table = "questionSet"
+        db_table = "questionset"
         verbose_name = _("QuestionsetModel")
         verbose_name_plural = _("QuestionsetModels")
 

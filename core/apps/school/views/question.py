@@ -62,8 +62,8 @@ class QuestionView(BaseViewSetMixin, ReadOnlyModelViewSet):
     }
 
 
-@extend_schema(tags=["questionSet"])
-class QuestionsetView(BaseViewSetMixin, ReadOnlyModelViewSet):
+@extend_schema(tags=["questionset"])
+class QuestionSetView(BaseViewSetMixin, ReadOnlyModelViewSet):
     queryset = QuestionSetModel.objects.all()
     serializer_class = ListQuestionsetSerializer
     permission_classes = [AllowAny]
