@@ -3,6 +3,6 @@ set -e
 
 echo "Starting deployment..."
 
-make deploy
+make deploy-prod
 
 echo "Deployment complete!"
