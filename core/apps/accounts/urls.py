@@ -13,8 +13,6 @@ router.register("auth", RegisterView, basename="auth")
 router.register("auth", ResetPasswordView, basename="reset-password")
 router.register("auth", MeView, basename="me")
 router.register("auth", ChangePasswordView, basename="change-password")
-router.register("student", StudentView, basename="student")
-router.register("parent", ParentView, basename="parent")
 
 
 urlpatterns = [

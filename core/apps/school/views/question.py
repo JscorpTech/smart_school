@@ -3,19 +3,22 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from core.apps.school.models import BobModel, QuestionModel, QuestionSetModel, TopicModel
+from core.apps.school.models import BobModel, QuestionModel, QuestionSetModel, ScienceModel, TopicModel
 from core.apps.school.serializers.question import (
     CreateBobSerializer,
     CreateQuestionSerializer,
     CreateQuestionsetSerializer,
+    CreateScienceSerializer,
     CreateTopicSerializer,
     ListBobSerializer,
     ListQuestionSerializer,
     ListQuestionsetSerializer,
+    ListScienceSerializer,
     ListTopicSerializer,
     RetrieveBobSerializer,
     RetrieveQuestionSerializer,
     RetrieveQuestionsetSerializer,
+    RetrieveScienceSerializer,
     RetrieveTopicSerializer,
 )
 
@@ -73,4 +76,18 @@ class QuestionSetView(BaseViewSetMixin, ReadOnlyModelViewSet):
         "list": ListQuestionsetSerializer,
         "retrieve": RetrieveQuestionsetSerializer,
         "create": CreateQuestionsetSerializer,
+    }
+
+
+@extend_schema(tags=["science"])
+class ScienceView(BaseViewSetMixin, ReadOnlyModelViewSet):
+    queryset = ScienceModel.objects.all()
+    serializer_class = ListScienceSerializer
+    permission_classes = [AllowAny]
+
+    action_permission_classes = {}
+    action_serializer_class = {
+        "list": ListScienceSerializer,
+        "retrieve": RetrieveScienceSerializer,
+        "create": CreateScienceSerializer,
     }

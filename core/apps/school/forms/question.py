@@ -1,6 +1,6 @@
 from django import forms
 
-from core.apps.school.models import BobModel, QuestionModel, QuestionSetModel, TopicModel
+from core.apps.school.models import BobModel, QuestionModel, QuestionSetModel, ScienceModel, TopicModel
 
 
 class BobForm(forms.ModelForm):
@@ -26,4 +26,11 @@ class QuestionsetForm(forms.ModelForm):
 
     class Meta:
         model = QuestionSetModel
+        fields = "__all__"
+
+
+class ScienceForm(forms.ModelForm):
+
+    class Meta:
+        model = ScienceModel
         fields = "__all__"

@@ -7,7 +7,7 @@ class ClassroomModel(AbstractBaseModel):
     name = models.CharField(verbose_name=_("name"), max_length=255)
 
     def __str__(self):
-        return self.pk
+        return self.name
 
     @classmethod
     def _create_fake(self):

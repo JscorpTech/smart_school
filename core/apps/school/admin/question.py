@@ -1,7 +1,7 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin
 
-from core.apps.school.models import BobModel, QuestionModel, QuestionSetModel, TopicModel
+from core.apps.school.models import BobModel, QuestionModel, QuestionSetModel, ScienceModel, TopicModel
 
 
 @admin.register(BobModel)
@@ -30,6 +30,14 @@ class QuestionAdmin(ModelAdmin):
 
 @admin.register(QuestionSetModel)
 class QuestionSetAdmin(ModelAdmin):
+    list_display = (
+        "id",
+        "__str__",
+    )
+
+
+@admin.register(ScienceModel)
+class ScienceAdmin(ModelAdmin):
     list_display = (
         "id",
         "__str__",

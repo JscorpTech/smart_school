@@ -42,7 +42,7 @@ class StudentModel(AbstractBaseModel):
     ice = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return self.pk
+        return str(self.pk)
 
     @classmethod
     def _create_fake(self):
@@ -63,7 +63,7 @@ class ParentModel(AbstractBaseModel):
     user = models.OneToOneField(User, verbose_name=_("user"), on_delete=models.CASCADE, related_name="parent")
 
     def __str__(self):
-        return self.pk
+        return str(self.pk)
 
     @classmethod
     def _create_fake(self):

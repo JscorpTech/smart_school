@@ -1,6 +1,6 @@
 from modeltranslation.translator import TranslationOptions, register
 
-from core.apps.school.models import BobModel, QuestionModel, QuestionSetModel, TopicModel
+from core.apps.school.models import BobModel, QuestionModel, QuestionSetModel, ScienceModel, TopicModel
 
 
 @register(BobModel)
@@ -20,4 +20,9 @@ class QuestionTranslation(TranslationOptions):
 
 @register(QuestionSetModel)
 class QuestionsetTranslation(TranslationOptions):
+    fields = []
+
+
+@register(ScienceModel)
+class ScienceTranslation(TranslationOptions):
     fields = []
