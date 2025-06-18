@@ -61,4 +61,4 @@ jobs:
 
       - name: Run Deployment Script
         run: |
-          ./deploy.sh  # Or whatever script you use
+          sh ./deploy.sh  # Or whatever script you use
