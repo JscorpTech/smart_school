@@ -1,6 +1,6 @@
 from django_filters import rest_framework as filters
 
-from core.apps.school.models import BobModel, QuestionModel, QuestionsetModel, TopicModel
+from core.apps.school.models import BobModel, QuestionModel, QuestionSetModel, TopicModel
 
 
 class BobFilter(filters.FilterSet):
@@ -37,7 +37,7 @@ class QuestionsetFilter(filters.FilterSet):
     # name = filters.CharFilter(field_name="name", lookup_expr="icontains")
 
     class Meta:
-        model = QuestionsetModel
+        model = QuestionSetModel
         fields = [
             "name",
         ]

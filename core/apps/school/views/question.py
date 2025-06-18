@@ -3,7 +3,7 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from core.apps.school.models import BobModel, QuestionModel, QuestionsetModel, TopicModel
+from core.apps.school.models import BobModel, QuestionModel, QuestionSetModel, TopicModel
 from core.apps.school.serializers.question import (
     CreateBobSerializer,
     CreateQuestionSerializer,
@@ -64,7 +64,7 @@ class QuestionView(BaseViewSetMixin, ReadOnlyModelViewSet):
 
 @extend_schema(tags=["questionSet"])
 class QuestionsetView(BaseViewSetMixin, ReadOnlyModelViewSet):
-    queryset = QuestionsetModel.objects.all()
+    queryset = QuestionSetModel.objects.all()
     serializer_class = ListQuestionsetSerializer
     permission_classes = [AllowAny]
 

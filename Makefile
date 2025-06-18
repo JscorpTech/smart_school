@@ -14,4 +14,12 @@ deploy:
 logs:
 	docker compose logs -f
 
+makemigration:
+	docker compose exec web python manage.py makemigrations --noinput
+
+migrate:
+	docker compose exec web python manage.py migrate
+
+makemigrate: makemigration migrate
+
 .PHONY: up

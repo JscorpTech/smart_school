@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from core.apps.school.models import BobModel, QuestionModel, QuestionsetModel, TopicModel
+from core.apps.school.models import BobModel, QuestionModel, QuestionSetModel, TopicModel
 
 
 @receiver(post_save, sender=BobModel)
@@ -16,5 +16,5 @@ def TopicSignal(sender, instance, created, **kwargs): ...
 def QuestionSignal(sender, instance, created, **kwargs): ...
 
 
-@receiver(post_save, sender=QuestionsetModel)
+@receiver(post_save, sender=QuestionSetModel)
 def QuestionsetSignal(sender, instance, created, **kwargs): ...

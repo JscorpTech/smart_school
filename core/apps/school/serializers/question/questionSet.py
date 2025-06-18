@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
-from core.apps.school.models import QuestionsetModel
+from core.apps.school.models import QuestionSetModel
 
 
 class BaseQuestionsetSerializer(serializers.ModelSerializer):
     class Meta:
-        model = QuestionsetModel
+        model = QuestionSetModel
         fields = [
             "id",
             "name",

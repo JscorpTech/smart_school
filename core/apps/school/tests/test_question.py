@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient
 
-from core.apps.school.models import BobModel, QuestionModel, QuestionsetModel, TopicModel
+from core.apps.school.models import BobModel, QuestionModel, QuestionSetModel, TopicModel
 
 
 class BobTest(TestCase):
@@ -134,7 +134,7 @@ class QuestionTest(TestCase):
 class QuestionsetTest(TestCase):
 
     def _create_data(self):
-        return QuestionsetModel._create_fake()
+        return QuestionSetModel._create_fake()
 
     def setUp(self):
         self.client = APIClient()
