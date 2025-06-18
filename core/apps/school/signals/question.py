@@ -1,0 +1,20 @@
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+from core.apps.school.models import BobModel, QuestionModel, QuestionsetModel, TopicModel
+
+
+@receiver(post_save, sender=BobModel)
+def BobSignal(sender, instance, created, **kwargs): ...
+
+
+@receiver(post_save, sender=TopicModel)
+def TopicSignal(sender, instance, created, **kwargs): ...
+
+
+@receiver(post_save, sender=QuestionModel)
+def QuestionSignal(sender, instance, created, **kwargs): ...
+
+
+@receiver(post_save, sender=QuestionsetModel)
+def QuestionsetSignal(sender, instance, created, **kwargs): ...
