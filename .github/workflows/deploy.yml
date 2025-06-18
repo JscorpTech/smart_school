@@ -21,7 +21,7 @@ jobs:
             echo "COMMAND=sh ./resources/scripts/entrypoint.sh" >> .env
             echo "PORT=${{ vars.PORT || '8081' }}" >> .env
             echo "PROJECT_ENV=${{ vars.PROJECT_ENV || 'debug' }}" >> .env
-            echo "PROTOCOL_HTTPS=${{ vars.PROTOCOL_HTTPS || 'http' }}" >> .env
+            echo "PROTOCOL_HTTPS=${{ vars.PROTOCOL_HTTPS || 'False' }}" >> .env
 
             echo "DB_ENGINE=django.db.backends.postgresql_psycopg2" >> .env
             echo "DB_NAME=django" >> .env
@@ -43,8 +43,8 @@ jobs:
             echo "SMS_LOGIN=admin@gmail.com" >> .env
             echo "SMS_PASSWORD=key" >> .env
 
-            echo "ALLOWED_HOSTS=127.0.0.1,web" >> .env
-            echo "CSRF_TRUSTED_ORIGINS=http://127.0.0.1:8081" >> .env
+            echo "ALLOWED_HOSTS=${{ vars.ALLOWED_HOSTS || 'localhost,web,127.0.0.1' }}" >> .env
+            echo "CSRF_TRUSTED_ORIGINS=${{ vars.CSRF_TRUSTED_ORIGINS || 'http://localhost' }}" >> .env
 
             echo "OTP_MODULE=core.services.otp" >> .env
             echo "OTP_SERVICE=EskizService" >> .env
