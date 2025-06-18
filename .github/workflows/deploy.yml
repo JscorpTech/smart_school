@@ -15,71 +15,49 @@ jobs:
 
       - name: make .env
         run: |
-            cat <<EOF > .env
-            # Django configs
-            DJANGO_SECRET_KEY=${secrets.DJANGO_SECRET_KEY}
-            DEBUG=True
-            DJANGO_SETTINGS_MODULE=config.settings.local
-            COMMAND=sh ./resources/scripts/entrypoint.sh
-            PORT=${vars.PORT:-8081}
-            #! debug | prod
-            PROJECT_ENV=${vars.PROJECT_ENV:-debug}
-            PROTOCOL_HTTPS=${vars.PROTOCOL_HTTPS:-http}
+            echo "DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}" >> .env
+            echo "DEBUG=True" >> .env
+            echo "DJANGO_SETTINGS_MODULE=config.settings.local" >> .env
+            echo "COMMAND=sh ./resources/scripts/entrypoint.sh" >> .env
+            echo "PORT=${{ vars.PORT || '8081' }}" >> .env
+            echo "PROJECT_ENV=${{ vars.PROJECT_ENV || 'debug' }}" >> .env
+            echo "PROTOCOL_HTTPS=${{ vars.PROTOCOL_HTTPS || 'http' }}" >> .env
 
-            # Databse configs
-            # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-            DB_ENGINE=django.db.backends.postgresql_psycopg2
-            DB_NAME=django
-            DB_USER=postgres
-            DB_PASSWORD=2309
-            DB_HOST=db
-            DB_PORT=5432
+            echo "DB_ENGINE=django.db.backends.postgresql_psycopg2" >> .env
+            echo "DB_NAME=django" >> .env
+            echo "DB_USER=postgres" >> .env
+            echo "DB_PASSWORD=2309" >> .env
+            echo "DB_HOST=db" >> .env
+            echo "DB_PORT=5432" >> .env
 
-            # Cache
-            CACHE_BACKEND=django.core.cache.backends.redis.RedisCache
-            REDIS_URL=redis://redis:6379
+            echo "CACHE_BACKEND=django.core.cache.backends.redis.RedisCache" >> .env
+            echo "REDIS_URL=redis://redis:6379" >> .env
+            echo "CACHE_ENABLED=False" >> .env
+            echo "CACHE_TIMEOUT=120" >> .env
 
+            echo "VITE_LIVE=False" >> .env
+            echo "VITE_PORT=5173" >> .env
+            echo "VITE_HOST=127.0.0.1" >> .env
 
-            CACHE_ENABLED=False
+            echo "SMS_API_URL=https://notify.eskiz.uz/api" >> .env
+            echo "SMS_LOGIN=admin@gmail.com" >> .env
+            echo "SMS_PASSWORD=key" >> .env
 
-            CACHE_TIMEOUT=120
+            echo "ALLOWED_HOSTS=127.0.0.1,web" >> .env
+            echo "CSRF_TRUSTED_ORIGINS=http://127.0.0.1:8081" >> .env
 
-            # Vite settings
-            VITE_LIVE=False
-            VITE_PORT=5173
-            VITE_HOST=127.0.0.1
+            echo "OTP_MODULE=core.services.otp" >> .env
+            echo "OTP_SERVICE=EskizService" >> .env
 
-            # Sms service
-            SMS_API_URL=https://notify.eskiz.uz/api
-            SMS_LOGIN=admin@gmail.com
-            SMS_PASSWORD=key
-
-            # Addition
-
-            ALLOWED_HOSTS=127.0.0.1,web
-            CSRF_TRUSTED_ORIGINS=http://127.0.0.1:8081
-
-
-            OTP_MODULE=core.services.otp
-            OTP_SERVICE=EskizService
-
-
-            # Storage
-            STORAGE_ID=id
-            STORAGE_KEY=key
-            STORAGE_URL=example.com
-
-            #! MINIO | AWS | FILE
-            STORAGE_DEFAULT=FILE
-
-            #! MINIO | AWS | STATIC
-            STORAGE_STATIC=STATIC
-
-            STORAGE_BUCKET_MEDIA=name
-            STORAGE_BUCKET_STATIC=name
-            STORAGE_PATH=127.0.0.1:8081/bucket/
-            STORAGE_PROTOCOL=http:
-            EOF
+            echo "STORAGE_ID=id" >> .env
+            echo "STORAGE_KEY=key" >> .env
+            echo "STORAGE_URL=example.com" >> .env
+            echo "STORAGE_DEFAULT=FILE" >> .env
+            echo "STORAGE_STATIC=STATIC" >> .env
+            echo "STORAGE_BUCKET_MEDIA=name" >> .env
+            echo "STORAGE_BUCKET_STATIC=name" >> .env
+            echo "STORAGE_PATH=127.0.0.1:8081/bucket/" >> .env
+            echo "STORAGE_PROTOCOL=http:" >> .env
 
       - name: Run Deployment Script
         run: |
