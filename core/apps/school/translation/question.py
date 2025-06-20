@@ -5,12 +5,16 @@ from core.apps.school.models import BobModel, QuestionModel, QuestionSetModel, S
 
 @register(BobModel)
 class BobTranslation(TranslationOptions):
-    fields = []
+    fields = [
+        "name",
+    ]
 
 
 @register(TopicModel)
 class TopicTranslation(TranslationOptions):
-    fields = []
+    fields = [
+        "name",
+    ]
 
 
 @register(QuestionModel)
@@ -25,4 +29,6 @@ class QuestionsetTranslation(TranslationOptions):
 
 @register(ScienceModel)
 class ScienceTranslation(TranslationOptions):
-    fields = []
+    fields = [
+        "name",
+    ]

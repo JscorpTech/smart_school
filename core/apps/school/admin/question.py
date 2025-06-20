@@ -8,7 +8,9 @@ from core.apps.school.models import BobModel, QuestionModel, QuestionSetModel, S
 class BobAdmin(ModelAdmin):
     list_display = (
         "id",
-        "__str__",
+        "name",
+        "science",
+        "classroom",
     )
 
 
@@ -16,7 +18,8 @@ class BobAdmin(ModelAdmin):
 class TopicAdmin(ModelAdmin):
     list_display = (
         "id",
-        "__str__",
+        "bob",
+        "name",
     )
 
 
@@ -24,7 +27,7 @@ class TopicAdmin(ModelAdmin):
 class QuestionAdmin(ModelAdmin):
     list_display = (
         "id",
-        "__str__",
+        "question_set",
     )
 
 
@@ -32,7 +35,9 @@ class QuestionAdmin(ModelAdmin):
 class QuestionSetAdmin(ModelAdmin):
     list_display = (
         "id",
-        "__str__",
+        "topic",
+        "difficulty",
+        "date",
     )
 
 
@@ -40,5 +45,5 @@ class QuestionSetAdmin(ModelAdmin):
 class ScienceAdmin(ModelAdmin):
     list_display = (
         "id",
-        "__str__",
+        "name",
     )

@@ -5,4 +5,6 @@ from core.apps.school.models import ClassroomModel
 
 @register(ClassroomModel)
 class ClassroomTranslation(TranslationOptions):
-    fields = []
+    fields = [
+        "name",
+    ]

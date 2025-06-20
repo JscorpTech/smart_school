@@ -8,5 +8,5 @@ from core.apps.school.models import ClassroomModel
 class ClassroomAdmin(ModelAdmin):
     list_display = (
         "id",
-        "__str__",
+        "name",
     )
