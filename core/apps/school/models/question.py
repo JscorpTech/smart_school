@@ -74,7 +74,7 @@ class QuestionModel(AbstractBaseModel):
     question_set = models.ForeignKey("QuestionSetModel", verbose_name=_("question_set"), on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return str(self.id)
 
     @classmethod
     def _create_fake(self):

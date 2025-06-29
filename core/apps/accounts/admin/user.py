@@ -6,6 +6,7 @@ from unfold.forms import AdminPasswordChangeForm  # UserCreationForm,
 from unfold.forms import UserChangeForm
 
 from core.apps.accounts.models import ParentModel, StudentModel
+from core.apps.accounts.models.parent import ParentOtpModel
 
 
 class CustomUserAdmin(admin.UserAdmin, ModelAdmin):
@@ -69,3 +70,8 @@ class ParentAdmin(ModelAdmin):
         "id",
         "__str__",
     )
+
+
+@register(ParentOtpModel)
+class ParentOtpAdmin(ModelAdmin):
+    list_display = ("id", "parent", "student", "code")

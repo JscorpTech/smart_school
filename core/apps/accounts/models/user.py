@@ -61,6 +61,9 @@ class StudentModel(AbstractBaseModel):
 
 class ParentModel(AbstractBaseModel):
     user = models.OneToOneField(User, verbose_name=_("user"), on_delete=models.CASCADE, related_name="parent")
+    children = models.ManyToManyField(
+        "StudentModel", verbose_name=_("children"), through="ChildrenModel", through_fields=("parent", "student")
+    )
 
     def __str__(self):
         return str(self.pk)
@@ -75,3 +78,24 @@ class ParentModel(AbstractBaseModel):
         db_table = "parent"
         verbose_name = _("ParentModel")
         verbose_name_plural = _("ParentModels")
+
+
+class ChildrenModel(AbstractBaseModel):
+    parent = models.ForeignKey(ParentModel, verbose_name=_("parent"), on_delete=models.CASCADE)
+    student = models.ForeignKey(StudentModel, verbose_name=_("student"), on_delete=models.CASCADE)
+    is_confirmed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.pk)
+
+    @classmethod
+    def _create_fake(self):
+        return self.objects.create(
+            parent=ParentModel._create_fake(),
+            student=StudentModel._create_fake(),
+        )
+
+    class Meta:
+        db_table = "children"
+        verbose_name = _("ChildrenModel")
+        verbose_name_plural = _("ChildrenModels")
