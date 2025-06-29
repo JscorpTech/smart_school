@@ -3,6 +3,6 @@ from django.utils.translation import gettext_lazy as _
 
 
 class DifficultyEnum(TextChoices):
-    EASY = "EASY", _("Easy")
-    MEDIUM = "MEDIUM", _("Medium")
-    HARD = "HARD", _("Hard")
+    EASY = "easy", _("Easy")
+    MEDIUM = "medium", _("Medium")
+    HARD = "hard", _("Hard")

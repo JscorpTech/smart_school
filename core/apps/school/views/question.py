@@ -1,7 +1,7 @@
 from django_core.mixins import BaseViewSetMixin
 from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import AllowAny
-from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 
 from core.apps.school.models import BobModel, QuestionModel, QuestionSetModel, ScienceModel, TopicModel
 from core.apps.school.serializers.question import (
@@ -24,7 +24,7 @@ from core.apps.school.serializers.question import (
 
 
 @extend_schema(tags=["bob"])
-class BobView(BaseViewSetMixin, ReadOnlyModelViewSet):
+class BobView(BaseViewSetMixin, ModelViewSet):
     queryset = BobModel.objects.all()
     serializer_class = ListBobSerializer
     permission_classes = [AllowAny]
@@ -38,7 +38,7 @@ class BobView(BaseViewSetMixin, ReadOnlyModelViewSet):
 
 
 @extend_schema(tags=["topic"])
-class TopicView(BaseViewSetMixin, ReadOnlyModelViewSet):
+class TopicView(BaseViewSetMixin, ModelViewSet):
     queryset = TopicModel.objects.all()
     serializer_class = ListTopicSerializer
     permission_classes = [AllowAny]
@@ -65,8 +65,8 @@ class QuestionView(BaseViewSetMixin, ReadOnlyModelViewSet):
     }
 
 
-@extend_schema(tags=["questionset"])
-class QuestionSetView(BaseViewSetMixin, ReadOnlyModelViewSet):
+@extend_schema(tags=["task"])
+class QuestionSetView(BaseViewSetMixin, ModelViewSet):
     queryset = QuestionSetModel.objects.all()
     serializer_class = ListQuestionsetSerializer
     permission_classes = [AllowAny]
@@ -80,7 +80,7 @@ class QuestionSetView(BaseViewSetMixin, ReadOnlyModelViewSet):
 
 
 @extend_schema(tags=["science"])
-class ScienceView(BaseViewSetMixin, ReadOnlyModelViewSet):
+class ScienceView(BaseViewSetMixin, ModelViewSet):
     queryset = ScienceModel.objects.all()
     serializer_class = ListScienceSerializer
     permission_classes = [AllowAny]

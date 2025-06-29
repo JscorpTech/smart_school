@@ -84,12 +84,8 @@ class RegisterView(BaseViewSetMixin, GenericViewSet, UserService):
             if SmsService.check_confirm(phone, code=code):
                 user = get_user_model().objects.filter(phone=phone).first()
                 user.step = UserStepChoice.STEP_2
-                token = self.validate_user(user)
                 return Response(
-                    data={
-                        "detail": _("Tasdiqlash ko'di qabul qilindi"),
-                        "token": token,
-                    },
+                    data=self.validate_user(user),
                     status=status.HTTP_202_ACCEPTED,
                 )
         except exceptions.SmsException as e:
@@ -277,3 +273,13 @@ class ChangePasswordView(BaseViewSetMixin, GenericViewSet):
                 status=status.HTTP_200_OK,
             )
         raise PermissionDenied(_("invalida password"))
+
+
+@extend_schema(tags=["delete-account"], summary="Accountni o'chirish")
+class DeleteAccountView(BaseViewSetMixin, GenericViewSet):
+    permission_classes = [IsAuthenticated]
+
+    @action(methods=["DELETE"], detail=False, url_name="delete_account", url_path="delete-account")
+    def delete_account(self, request):
+        request.user.delete()
+        return Response(data={"detail": _("Account o'chirildi")})

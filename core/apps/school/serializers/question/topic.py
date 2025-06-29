@@ -25,4 +25,5 @@ class CreateTopicSerializer(BaseTopicSerializer):
         fields = [
             "id",
             "name",
+            "bob",
         ]

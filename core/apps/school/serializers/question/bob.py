@@ -6,8 +6,12 @@ from core.apps.school.serializers.classroom.classroom import ListClassroomSerial
 
 
 class BaseBobSerializer(serializers.ModelSerializer):
-    science = ListScienceSerializer()
-    classroom = ListClassroomSerializer()
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data["science"] = ListScienceSerializer(instance.science).data
+        data["classroom"] = ListClassroomSerializer(instance.science).data
+        return data
 
     class Meta:
         model = BobModel

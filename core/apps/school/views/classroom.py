@@ -1,7 +1,7 @@
 from django_core.mixins import BaseViewSetMixin
 from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import AllowAny
-from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.viewsets import ModelViewSet
 
 from core.apps.school.models import ClassroomModel
 from core.apps.school.serializers.classroom import (
@@ -12,7 +12,7 @@ from core.apps.school.serializers.classroom import (
 
 
 @extend_schema(tags=["classroom"])
-class ClassroomView(BaseViewSetMixin, ReadOnlyModelViewSet):
+class ClassroomView(BaseViewSetMixin, ModelViewSet):
     queryset = ClassroomModel.objects.all()
     serializer_class = ListClassroomSerializer
     permission_classes = [AllowAny]

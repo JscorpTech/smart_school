@@ -4,13 +4,14 @@ Accounts app urls
 
 from django.urls import path, include
 from rest_framework_simplejwt import views as jwt_views
-from .views import RegisterView, ResetPasswordView, MeView, ChangePasswordView, LoginView
+from .views import RegisterView, ResetPasswordView, MeView, ChangePasswordView, LoginView, DeleteAccountView
 from rest_framework.routers import DefaultRouter
 from .views.child import ChildViewSet
 
 router = DefaultRouter()
 router.register("auth/register", RegisterView, basename="register")
 router.register("auth/login", LoginView, basename="login")
+router.register("auth", DeleteAccountView, basename="auth")
 router.register("auth", ResetPasswordView, basename="reset-password")
 router.register("auth", MeView, basename="me")
 router.register("auth", ChangePasswordView, basename="change-password")
