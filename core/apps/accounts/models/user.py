@@ -1,7 +1,7 @@
 from django.contrib.auth import models as auth_models
 from django.db import models
 from django_core.models import AbstractBaseModel
-from ..choices import RoleChoice
+from ..choices import RoleChoice, UserStepChoice
 from ..managers import UserManager
 from django.utils.translation import gettext_lazy as _
 
@@ -11,6 +11,7 @@ class User(auth_models.AbstractUser):
     username = models.CharField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    step = models.CharField(_("step"), max_length=20, choices=UserStepChoice.choices, default=UserStepChoice.STEP_1)
     validated_at = models.DateTimeField(null=True, blank=True)
     role = models.CharField(
         max_length=255,

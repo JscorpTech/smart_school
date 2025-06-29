@@ -10,3 +10,9 @@ class RoleChoice(models.TextChoices):
     ADMIN = "admin", _("Admin")
     PARENT = "parent", _("Parent")
     STUDENT = "student", _("Student")
+
+
+class UserStepChoice(models.TextChoices):
+    STEP_1 = "step1", _("step 1")
+    STEP_2 = "step2", _("step 2")
+    STEP_3 = "step3", _("step 3")

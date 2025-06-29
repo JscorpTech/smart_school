@@ -4,8 +4,28 @@ from rest_framework import exceptions, serializers
 
 
 class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField(max_length=255)
+    phone = serializers.CharField(max_length=255)
     password = serializers.CharField(max_length=255)
+
+
+class LoginStep2Serializer(serializers.Serializer):
+    phone = serializers.CharField(max_length=20)
+    token = serializers.CharField(max_length=50)
+    code = serializers.IntegerField()
+
+
+class RegisterStep3Serializer(serializers.Serializer):
+    password = serializers.CharField(required=True)
+    password_confirm = serializers.CharField(required=True)
+
+    def validate(self, attrs):
+        password = attrs.get("password")
+        password_confirm = attrs.get("password_confirm")
+        if password is None:
+            raise exceptions.ValidationError({"phone": _("telefon raqam majburiy")})
+        elif password != password_confirm:
+            raise exceptions.ValidationError({"phone": _("confirm password birxil emas")})
+        return attrs
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -19,13 +39,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ["first_name", "last_name", "phone", "password"]
-        extra_kwargs = {
-            "first_name": {
-                "required": True,
-            },
-            "last_name": {"required": True},
-        }
+        fields = ["phone"]
 
 
 class ConfirmSerializer(serializers.Serializer):

@@ -22,11 +22,17 @@ from ..serializers import (
     UserSerializer,
     UserUpdateSerializer,
 )
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.hashers import make_password
 from drf_spectacular.utils import OpenApiResponse
 from rest_framework.permissions import IsAuthenticated
-from ..serializers import ChangePasswordSerializer
+from ..serializers import ChangePasswordSerializer, RegisterStep3Serializer
+from core.apps.accounts.choices import UserStepChoice
+from django.contrib.auth import hashers
+from core.apps.accounts.serializers import LoginSerializer, LoginStep2Serializer
+from django.contrib.auth import hashers
+from rest_framework.exceptions import ValidationError
+from core.apps.accounts.services.auth import create_login_token, check_login_token, delete_login_token
 
 from .. import models
 
@@ -35,42 +41,50 @@ from .. import models
 class RegisterView(BaseViewSetMixin, GenericViewSet, UserService):
     throttle_classes = [throttling.UserRateThrottle]
     permission_classes = [AllowAny]
+    action_permission_classes = {
+        "step_3": [IsAuthenticated],
+    }
 
     def get_serializer_class(self):
         match self.action:
-            case "register":
+            case "step_1":
                 return RegisterSerializer
-            case "confirm":
+            case "step_2":
                 return ConfirmSerializer
+            case "step_3":
+                return RegisterStep3Serializer
             case "resend":
                 return ResendSerializer
             case _:
                 return RegisterSerializer
 
-    @action(methods=["POST"], detail=False, url_path="register")
-    def register(self, request):
+    @extend_schema(summary="Ro'yhatdan o'tish", description="yangi userlar uchun register")
+    @action(methods=["POST"], detail=False, url_path="step-1")
+    def setp_1(self, request):
         ser = self.get_serializer(data=request.data)
         ser.is_valid(raise_exception=True)
         data = ser.data
         phone = data.get("phone")
         # Create pending user
-        self.create_user(phone, data.get("first_name"), data.get("last_name"), data.get("password"))
+        self.create_user(phone)
         self.send_confirmation(phone)  # Send confirmation code for sms eskiz.uz
         return Response(
             {"detail": _("Sms %(phone)s raqamiga yuborildi") % {"phone": phone}},
             status=status.HTTP_202_ACCEPTED,
         )
 
-    @extend_schema(summary="Auth confirm.", description="Auth confirm user.")
-    @action(methods=["POST"], detail=False, url_path="confirm")
-    def confirm(self, request):
+    @extend_schema(summary="Auth confirm.", description="To'lefon nomerni tasdiqlash sms ko'dni kiritish.")
+    @action(methods=["POST"], detail=False, url_path="step-2")
+    def step_2(self, request):
         ser = self.get_serializer(data=request.data)
         ser.is_valid(raise_exception=True)
         data = ser.data
         phone, code = data.get("phone"), data.get("code")
         try:
             if SmsService.check_confirm(phone, code=code):
-                token = self.validate_user(get_user_model().objects.filter(phone=phone).first())
+                user = get_user_model().objects.filter(phone=phone).first()
+                user.step = UserStepChoice.STEP_2
+                token = self.validate_user(user)
                 return Response(
                     data={
                         "detail": _("Tasdiqlash ko'di qabul qilindi"),
@@ -83,6 +97,18 @@ class RegisterView(BaseViewSetMixin, GenericViewSet, UserService):
         except Exception as e:
             raise PermissionDenied(e)  # Api exception for APIException
 
+    @extend_schema(summary="Parol qo'yish", description="Yangi user uchun parol yaratish")
+    @action(methods=["POST"], detail=False, url_name="step_3", url_path="step-3")
+    def step_3(self, request):
+        ser = self.get_serializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        password = ser.validated_data.get("password")
+        user = request.user
+        user.step = UserStepChoice.STEP_3
+        user.password = hashers.make_password(password)
+        user.save()
+        return Response(data={"detail": _("Parol yaratildi")})
+
     @action(methods=["POST"], detail=False, url_path="resend")
     def resend(self, rq: Type[request.Request]):
         ser = self.get_serializer(data=rq.data)
@@ -90,6 +116,50 @@ class RegisterView(BaseViewSetMixin, GenericViewSet, UserService):
         phone = ser.data.get("phone")
         self.send_confirmation(phone)
         return Response({"detail": _("Sms %(phone)s raqamiga yuborildi") % {"phone": phone}})
+
+
+@extend_schema(tags=["login"])
+class LoginView(BaseViewSetMixin, GenericViewSet):
+    permission_classes = [AllowAny]
+    action_serializer_class = {
+        "step_1": LoginSerializer,
+        "step_2": LoginStep2Serializer,
+    }
+
+    @action(methods=["POST"], detail=False, url_name="step_1", url_path="step-1")
+    def step_1(self, request):
+        ser = self.get_serializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        phone = ser.validated_data.get("phone")
+        password = ser.validated_data.get("password")
+        user = get_user_model().objects.filter(phone=phone).first()
+        if user is None or not hashers.check_password(password, user.password):
+            raise ValidationError({"phone": [_("invalid user or password")]})
+        service = SmsService()
+        service.send_confirm(phone)
+        token = create_login_token(user)
+        return Response(data={"token": token}, status=status.HTTP_200_OK)
+
+    @action(methods=["POST"], detail=False, url_name="step_2", url_path="step-2")
+    def step_2(self, request):
+        ser = self.get_serializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        token = ser.validated_data.get("token")
+        phone = ser.validated_data.get("phone")
+        code = ser.validated_data.get("code")
+        user = get_user_model().objects.filter(phone=phone).first()
+        if user is None:
+            raise ValidationError({"phone": [_("User not found")]})
+        if not check_login_token(user, token):
+            raise ValidationError({"token": [_("invalid token")]})
+        service = SmsService()
+        try:
+            service.check_confirm(phone, code)
+            user_service = UserService()
+            delete_login_token(token)
+            return Response(data=user_service.get_token(user))
+        except Exception as e:
+            raise PermissionDenied(e)
 
 
 @extend_schema(tags=["reset-password"])
