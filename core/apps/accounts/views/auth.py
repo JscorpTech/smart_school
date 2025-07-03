@@ -59,8 +59,8 @@ class RegisterView(BaseViewSetMixin, GenericViewSet, UserService):
                 return RegisterSerializer
 
     @extend_schema(summary="Ro'yhatdan o'tish", description="yangi userlar uchun register")
-    @action(methods=["POST"], detail=False, url_path="step-1")
-    def setp_1(self, request):
+    @action(methods=["POST"], detail=False, url_path="step-1", url_name="step-1")
+    def step_1(self, request):
         ser = self.get_serializer(data=request.data)
         ser.is_valid(raise_exception=True)
         data = ser.data
@@ -94,7 +94,7 @@ class RegisterView(BaseViewSetMixin, GenericViewSet, UserService):
             raise PermissionDenied(e)  # Api exception for APIException
 
     @extend_schema(summary="Parol qo'yish", description="Yangi user uchun parol yaratish")
-    @action(methods=["POST"], detail=False, url_name="step_3", url_path="step-3")
+    @action(methods=["POST"], detail=False, url_name="step-3", url_path="step-3")
     def step_3(self, request):
         ser = self.get_serializer(data=request.data)
         ser.is_valid(raise_exception=True)

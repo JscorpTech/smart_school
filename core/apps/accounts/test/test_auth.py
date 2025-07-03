@@ -30,46 +30,35 @@ class SmsViewTest(TestCase):
         )
         SmsConfirm.objects.create(phone=self.phone, code=self.code)
 
-    def test_reg_view(self):
+    def test_register_step_1(self):
         """Test register view."""
-        data = {
-            "phone": "998999999991",
-            "first_name": "John",
-            "last_name": "Doe",
-            "password": "password",
-        }
+        data = {"phone": "998999999991"}
         with patch.object(SmsService, "send_confirm", return_value=True):
-            response = self.client.post(reverse("auth-register"), data=data)
+            response = self.client.post(reverse("register-step-1"), data=data)
             self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
             self.assertEqual(
                 response.data["data"]["detail"],
                 "Sms %(phone)s raqamiga yuborildi" % {"phone": data["phone"]},
             )
 
-    def test_confirm_view(self):
+    def test_register_step_2(self):
         """Test confirm view."""
         data = {"phone": self.phone, "code": self.code}
-        response = self.client.post(reverse("auth-confirm"), data=data)
+        response = self.client.post(reverse("register-step-2"), data=data)
         self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
 
-    def test_invalid_confirm_view(self):
+    def test_register_invalid_step_2(self):
         """Test confirm view."""
         data = {"phone": self.phone, "code": "1112"}
-        response = self.client.post(reverse("auth-confirm"), data=data)
+        response = self.client.post(reverse("register-step-2"), data=data)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_reset_confirmation_code_view(self):
-        """Test reset confirmation code view."""
-        data = {"phone": self.phone, "code": self.code}
-        response = self.client.post(reverse("auth-confirm"), data=data)
-        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
-        self.assertIn("token", response.data["data"])
-
-    def test_reset_confirmation_code_view_invalid_code(self):
-        """Test reset confirmation code view with invalid code."""
-        data = {"phone": self.phone, "code": "123456"}
-        response = self.client.post(reverse("auth-confirm"), data=data)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    def test_register_step_3(self):
+        """Test confirm view."""
+        self.client.force_authenticate(user=self.user)
+        data = {"password": "A123456780", "password_confirm": "A123456780"}
+        response = self.client.post(reverse("register-step-3"), data=data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_reset_set_password_view(self):
         """Test reset set password view."""
@@ -90,7 +79,7 @@ class SmsViewTest(TestCase):
     def test_resend_view(self):
         """Test resend view."""
         data = {"phone": self.phone}
-        response = self.client.post(reverse("auth-resend"), data=data)
+        response = self.client.post(reverse("register-resend"), data=data)
         logging.error(response.json())
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
