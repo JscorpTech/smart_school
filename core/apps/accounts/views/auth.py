@@ -122,7 +122,7 @@ class LoginView(BaseViewSetMixin, GenericViewSet):
         "step_2": LoginStep2Serializer,
     }
 
-    @action(methods=["POST"], detail=False, url_name="step_1", url_path="step-1")
+    @action(methods=["POST"], detail=False, url_name="step-1", url_path="step-1")
     def step_1(self, request):
         ser = self.get_serializer(data=request.data)
         ser.is_valid(raise_exception=True)
@@ -136,7 +136,7 @@ class LoginView(BaseViewSetMixin, GenericViewSet):
         token = create_login_token(user)
         return Response(data={"token": token}, status=status.HTTP_200_OK)
 
-    @action(methods=["POST"], detail=False, url_name="step_2", url_path="step-2")
+    @action(methods=["POST"], detail=False, url_name="step-2", url_path="step-2")
     def step_2(self, request):
         ser = self.get_serializer(data=request.data)
         ser.is_valid(raise_exception=True)

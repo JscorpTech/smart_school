@@ -103,3 +103,14 @@ class SmsViewTest(TestCase):
         response = self.client.patch(reverse("me-user-update"), data=data)
         logging.error(response.json())
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_login(self):
+        data = {
+            "phone": self.phone,
+            "password": self.password,
+        }
+        response = self.client.post(reverse("login-step-1"), data=data)
+        self.assertTrue(response.json()["status"])
+        token = response.json()["data"]["token"]
+        response = self.client.post(reverse("login-step-2"), data={"token": token, "phone": self.phone, "code": self.code})
+        self.assertTrue(response.json()['status'])
