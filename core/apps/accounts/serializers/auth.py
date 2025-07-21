@@ -22,9 +22,11 @@ class RegisterStep3Serializer(serializers.Serializer):
         password = attrs.get("password")
         password_confirm = attrs.get("password_confirm")
         if password is None:
-            raise exceptions.ValidationError({"phone": _("telefon raqam majburiy")})
+            raise exceptions.ValidationError(
+                {"phone": _("telefon raqam majburiy")})
         elif password != password_confirm:
-            raise exceptions.ValidationError({"phone": _("confirm password birxil emas")})
+            raise exceptions.ValidationError(
+                {"phone": _("confirm password birxil emas")})
         return attrs
 
 
@@ -32,9 +34,11 @@ class RegisterSerializer(serializers.ModelSerializer):
     phone = serializers.CharField(max_length=255)
 
     def validate_phone(self, value):
-        user = get_user_model().objects.filter(phone=value, validated_at__isnull=False)
+        user = get_user_model().objects.filter(phone=value,
+                                               validated_at__isnull=False)
         if user.exists():
-            raise exceptions.ValidationError(_("Phone number already registered."), code="unique")
+            raise exceptions.ValidationError(
+                _("Phone number already registered."), code="unique")
         return value
 
     class Meta:
@@ -43,7 +47,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class ConfirmSerializer(serializers.Serializer):
-    code = serializers.IntegerField(min_value=1000, max_value=9999)
+    code = serializers.IntegerField(min_value=100000, max_value=999999)
     phone = serializers.CharField(max_length=255)
 
 
@@ -59,7 +63,7 @@ class ResetPasswordSerializer(serializers.Serializer):
 
 
 class ResetConfirmationSerializer(serializers.Serializer):
-    code = serializers.IntegerField(min_value=1000, max_value=9999)
+    code = serializers.IntegerField(min_value=100000, max_value=999999)
     phone = serializers.CharField(max_length=255)
 
     def validate_phone(self, value):
