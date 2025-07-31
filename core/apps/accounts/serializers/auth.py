@@ -2,6 +2,10 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
 from rest_framework import exceptions, serializers
 
+from config.env import env
+
+OTP_SIZE = env.int("OTP_SIZE", 4)
+
 
 class LoginSerializer(serializers.Serializer):
     phone = serializers.CharField(max_length=255)
@@ -11,7 +15,7 @@ class LoginSerializer(serializers.Serializer):
 class LoginStep2Serializer(serializers.Serializer):
     phone = serializers.CharField(max_length=20)
     token = serializers.CharField(max_length=50)
-    code = serializers.IntegerField()
+    code = serializers.CharField(max_length=OTP_SIZE, min_length=OTP_SIZE)
 
 
 class RegisterStep3Serializer(serializers.Serializer):
@@ -22,11 +26,9 @@ class RegisterStep3Serializer(serializers.Serializer):
         password = attrs.get("password")
         password_confirm = attrs.get("password_confirm")
         if password is None:
-            raise exceptions.ValidationError(
-                {"phone": _("telefon raqam majburiy")})
+            raise exceptions.ValidationError({"phone": _("telefon raqam majburiy")})
         elif password != password_confirm:
-            raise exceptions.ValidationError(
-                {"phone": _("confirm password birxil emas")})
+            raise exceptions.ValidationError({"phone": _("confirm password birxil emas")})
         return attrs
 
 
@@ -34,11 +36,9 @@ class RegisterSerializer(serializers.ModelSerializer):
     phone = serializers.CharField(max_length=255)
 
     def validate_phone(self, value):
-        user = get_user_model().objects.filter(phone=value,
-                                               validated_at__isnull=False)
+        user = get_user_model().objects.filter(phone=value, validated_at__isnull=False)
         if user.exists():
-            raise exceptions.ValidationError(
-                _("Phone number already registered."), code="unique")
+            raise exceptions.ValidationError(_("Phone number already registered."), code="unique")
         return value
 
     class Meta:
@@ -47,8 +47,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class ConfirmSerializer(serializers.Serializer):
-    code = serializers.IntegerField(min_value=100000, max_value=999999)
     phone = serializers.CharField(max_length=255)
+    code = serializers.CharField(max_length=OTP_SIZE, min_length=OTP_SIZE)
 
 
 class ResetPasswordSerializer(serializers.Serializer):

@@ -1,28 +1,33 @@
 {
- "template": "https://github.com/JscorpTech/django",
- "commit": "d8682a7685597c2cf088da2f240b78a7a71e91ec",
- "checkout": null,
- "context": {
-  "cookiecutter": {
-   "cacheops": true,
-   "silk": true,
-   "storage": true,
-   "rosetta": false,
-   "channels": true,
-   "ckeditor": true,
-   "modeltranslation": true,
-   "parler": false,
-   "project_name": "smart_school",
-   "settings_module": "config.settings.local",
-   "runner": "wsgi",
-   "script": "entrypoint.sh",
-   "key": "key",
-   "port": "8081",
-   "phone": "998888112309",
-   "password": "2309",
-   "max_line_length": "120",
-   "project_slug": "smart_school"
-  }
- },
- "directory": null
+  "template": "https://github.com/JscorpTech/django",
+  "commit": "52d9e5f84864643b6de1273f60c7d47cc46b3be9",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "project_name": "smart_school",
+      "project_slug": "smart_school",
+      "settings_module": "config.settings.local",
+      "runner": "wsgi",
+      "celery": "no",
+      "cache": "no",
+      "script": "entrypoint.sh",
+      "key": "key",
+      "port": "8081",
+      "phone": "998888112309",
+      "password": "2309",
+      "max_line_length": "120",
+      "silk": true,
+      "storage": true,
+      "channels": true,
+      "rosetta": false,
+      "cacheops": true,
+      "ckeditor": true,
+      "modeltranslation": true,
+      "parler": false,
+      "version": "0.1.1",
+      "_template": "https://github.com/JscorpTech/django",
+      "_commit": "52d9e5f84864643b6de1273f60c7d47cc46b3be9"
+    }
+  },
+  "directory": null
 }
