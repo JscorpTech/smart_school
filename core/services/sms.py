@@ -1,4 +1,4 @@
-import random
+# import random
 from datetime import datetime, timedelta
 
 from django_core import exceptions, models, tasks

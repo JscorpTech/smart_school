@@ -4,7 +4,6 @@ from core.apps.school.models import BobModel, QuestionModel, QuestionSetModel, S
 
 
 class BobFilter(filters.FilterSet):
-    # name = filters.CharFilter(field_name="name", lookup_expr="icontains")
 
     class Meta:
         model = BobModel
@@ -14,7 +13,6 @@ class BobFilter(filters.FilterSet):
 
 
 class TopicFilter(filters.FilterSet):
-    # name = filters.CharFilter(field_name="name", lookup_expr="icontains")
 
     class Meta:
         model = TopicModel
@@ -24,7 +22,6 @@ class TopicFilter(filters.FilterSet):
 
 
 class QuestionFilter(filters.FilterSet):
-    # name = filters.CharFilter(field_name="name", lookup_expr="icontains")
 
     class Meta:
         model = QuestionModel
@@ -34,7 +31,6 @@ class QuestionFilter(filters.FilterSet):
 
 
 class QuestionsetFilter(filters.FilterSet):
-    # name = filters.CharFilter(field_name="name", lookup_expr="icontains")
 
     class Meta:
         model = QuestionSetModel
@@ -44,7 +40,6 @@ class QuestionsetFilter(filters.FilterSet):
 
 
 class ScienceFilter(filters.FilterSet):
-    # name = filters.CharFilter(field_name="name", lookup_expr="icontains")
 
     class Meta:
         model = ScienceModel
